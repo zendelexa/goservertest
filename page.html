@@ -1,0 +1,50 @@
+<!--<button onclick="refreshChat()">Refresh chat</button>-->
+
+<input type="text" id="message-input">
+<button onclick="sendMessage()">Send</button>
+
+<br>
+
+<div id="chat"></div>
+
+<script>
+    function getJSON(r) {
+        return r.json();
+    }
+
+    function refreshChat() {
+        fetch("http://localhost:3000/chat")
+            .then((response) => response.text())
+            .then((text) => {
+                var json_chat = JSON.parse(text);
+                var chat_messages = json_chat.map(json_chat_message => json_chat_message.Text);
+                document.getElementById("chat").innerText = chat_messages.join("\n");
+                //console.log(text);
+            })
+    }
+
+    // TODO: Переписать на сокеты
+    function refreshContiniously() {
+        refreshChat();
+        setTimeout(refreshContiniously, 1000);
+    }
+
+    function sendMessage() {
+        var message_text = document.getElementById("message-input").value;
+        if (message_text.length > 0) {
+            fetch("http://localhost:3000/chat", {
+                method: "post",
+                body: JSON.stringify({
+                    "Text": message_text
+                })
+            });
+        }
+    }
+
+    document.getElementById("message-input").onkeypress = function(event) {
+        if (event.key == "Enter") {
+            sendMessage();
+        }
+    }
+    refreshContiniously();
+</script>
