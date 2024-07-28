@@ -34,8 +34,6 @@ func handleFuncHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	chat = append(chat, Message{"Hello"})
-
 	http.HandleFunc("/", handleFuncHome)
 	http.HandleFunc("/chat", handleFuncChat)
 	fmt.Println("OK")

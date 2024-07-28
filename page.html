@@ -8,12 +8,15 @@
 <div id="chat"></div>
 
 <script>
+
+    const ADRESS = "localhost"
+
     function getJSON(r) {
         return r.json();
     }
 
     function refreshChat() {
-        fetch("http://localhost:3000/chat")
+        fetch("http://" + ADRESS + ":3000/chat")
             .then((response) => response.text())
             .then((text) => {
                 var json_chat = JSON.parse(text);
@@ -32,13 +35,14 @@
     function sendMessage() {
         var message_text = document.getElementById("message-input").value;
         if (message_text.length > 0) {
-            fetch("http://localhost:3000/chat", {
+            fetch("http://" + ADRESS + ":3000/chat", {
                 method: "post",
                 body: JSON.stringify({
                     "Text": message_text
                 })
             });
         }
+        document.getElementById("message-input").value = "";
     }
 
     document.getElementById("message-input").onkeypress = function(event) {
