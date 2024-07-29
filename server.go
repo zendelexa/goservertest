@@ -63,5 +63,13 @@ func main() {
 	http.HandleFunc("/", handleFuncHome)
 	http.HandleFunc("/chat", handleFuncChat)
 	fmt.Println("OK")
-	http.ListenAndServe(":3000", nil)
+	go http.ListenAndServe(":3000", nil)
+
+	var s string
+	for {
+		fmt.Scan(&s)
+		if s == "/clear" {
+			chat = chat[:0]
+		}
+	}
 }
