@@ -23,6 +23,13 @@ func logErr(err error) {
 	}
 }
 
+func updateChatFile() {
+	chat_content, err := json.Marshal(chat)
+	logErr(err)
+	err = os.WriteFile("chat.json", chat_content, 0666)
+	logErr(err)
+}
+
 func handleFuncChat(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -36,10 +43,7 @@ func handleFuncChat(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if msg_id%5 == 0 {
-			chat_content, err := json.Marshal(chat)
-			logErr(err)
-			err = os.WriteFile("chat.json", chat_content, 0666)
-			logErr(err)
+			updateChatFile()
 		}
 		msg_id++
 	}
